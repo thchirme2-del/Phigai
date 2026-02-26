@@ -267,5 +267,28 @@
         });
     <script type="module" src="stripe-button.js"></script>
     <script type="module" src="./main.js"></script>
+    <!-- CART SIDEBAR -->
+<aside id="cart-sidebar" class="translate-x-full invisible">
+  <div class="cart-header">
+    <h3>Your Bag</h3>
+    <button onclick="closeCart()">Close</button>
+  </div>
+
+  <div id="cart-items"></div>
+
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <span id="cart-total">₹0</span>
+    </div>
+
+    <button id="confirm-order">Pay Now</button>
+  </div>
+</aside>
+
+<!-- CART ICON (put this in your navbar/header ideally) -->
+<button id="cart-btn" onclick="openCart()">
+  Bag <span id="cart-count" style="opacity:0;">0</span>
+</button>
 </body>
 </html>
