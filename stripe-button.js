@@ -8,9 +8,9 @@ async function payWithStripe() {
 
   const items = cart.map((p) => ({
     name: p.name,
-    amount: Number(p.price),          // price per item (INR)
+    amount: Number(p.price),
     qty: Number(p.quantity || 1),
-    image: (p.images && p.images[0]) || p.image || ""
+    image: p.image || ""
   }));
 
   const r = await fetch("/api/create-checkout-session", {
