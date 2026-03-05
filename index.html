@@ -3,473 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHIGAI | Quiet Motion. Unspoken Presence.</title>
+    <title>PHIGAI | The Architecture of Quietude</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        phigai: {
+                            cream: '#F9F7F2',
+                            charcoal: '#1A1A1A',
+                            beige: '#D2B48C',
+                            muted: '#F4F1EA',
+                            red: '#E54B4B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-[#F5F5F0] text-[#2C2C2B] font-sans antialiased overflow-x-hidden">
+<body class="bg-phigai-cream text-phigai-charcoal selection:bg-phigai-beige selection:text-white overflow-x-hidden transition-colors duration-1000 ease-in-out">
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-6 mix-blend-difference text-white transition-all duration-700" id="navbar">
-        <div class="flex items-center space-x-8 uppercase text-[10px] tracking-[0.2em] font-medium hidden md:flex">
-            <a href="#collection" class="nav-link">Collection</a>
-            <a href="#about" class="nav-link">Philosophy</a>
-            <a href="#lookbook" class="nav-link">Lookbook</a>
+    <nav class="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-6 transition-all duration-500" id="navbar">
+        <div class="flex items-center space-x-8">
+            <button class="nav-link uppercase tracking-widest text-[10px] hidden md:block" onclick="document.getElementById('featured').scrollIntoView()">Collection</button>
+            <button class="nav-link uppercase tracking-widest text-[10px] hidden md:block">Journal</button>
+            <button id="mobile-menu-open" class="md:hidden"><i data-lucide="menu" class="w-5 h-5"></i></button>
         </div>
-        
-        <a href="#" class="text-2xl font-serif tracking-[0.3em] absolute left-1/2 -translate-x-1/2">PHIGAI</a>
-        
-        <div class="flex items-center space-x-6">
-            <button class="relative hover:opacity-50 transition-opacity" id="cart-trigger">
-                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-                <span id="cart-count" class="absolute -top-2 -right-2 bg-[#D9D2C5] text-[#2C2C2B] text-[8px] w-4 h-4 flex items-center justify-center rounded-full opacity-0 transition-opacity font-bold">0</span>
+        <a href="#" class="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl tracking-[0.4em] font-serif uppercase brand-logo-text" id="brand-logo">Phigai</a>
+        <div class="flex items-center space-x-3 md:space-x-4">
+            <div class="relative hidden md:block currency-selector-wrapper">
+                <select id="currency-select" class="bg-phigai-muted text-phigai-charcoal text-[9px] font-bold uppercase tracking-widest outline-none cursor-pointer border-none appearance-none px-4 py-2.5 rounded-full transition-colors hover:bg-phigai-beige/10">
+                    <option value="INR" class="bg-white">INR ₹</option>
+                    <option value="USD" class="bg-white">USD $</option>
+                    <option value="EUR" class="bg-white">EUR €</option>
+                </select>
+            </div>
+            <button class="profile-toggle relative w-9 h-9 flex items-center justify-center bg-phigai-muted rounded-full transition-colors hover:bg-phigai-beige/10" title="My Profile">
+                <i data-lucide="user" class="w-4 h-4"></i>
             </button>
-            <button class="md:hidden" id="mobile-menu-trigger"><i data-lucide="menu" class="w-5 h-5"></i></button>
+            <button class="wishlist-toggle relative w-9 h-9 flex items-center justify-center bg-phigai-muted rounded-full transition-colors hover:bg-phigai-beige/10">
+                <i data-lucide="heart" class="w-4 h-4 wish-icon-nav"></i>
+                <span id="wishlist-count" class="absolute -top-1 -right-1 text-[8px] bg-phigai-red text-white w-3.5 h-3.5 flex items-center justify-center rounded-full opacity-0 transition-opacity">0</span>
+            </button>
+            <button class="cart-toggle relative w-9 h-9 flex items-center justify-center bg-phigai-muted rounded-full transition-colors hover:bg-phigai-beige/10">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 text-[8px] bg-phigai-charcoal text-white w-3.5 h-3.5 flex items-center justify-center rounded-full opacity-0 transition-opacity">0</span>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="relative h-[100svh] w-full flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0 scale-110" id="hero-bg">
-            <img src="https://r2-bucket.flowith.net/f/ef50edb275540f58/phigai_minimalist_fashion_hero_index_0%404096x2286.jpeg" 
-                 class="w-full h-full object-cover brightness-[0.85]" alt="Phigai Hero">
-        </div>
-        
-        <div class="relative z-10 text-center text-white space-y-8" id="hero-content">
-            <h1 class="text-7xl md:text-[10rem] font-serif tracking-tighter leading-none reveal-text">
-                PHIGAI
-            </h1>
-            <p class="text-[10px] md:text-xs tracking-[0.6em] uppercase font-light opacity-0" id="hero-tagline">
-                Quiet Motion. Unspoken Presence.
-            </p>
-            <div class="pt-12 opacity-0" id="hero-cta">
-                <a href="#collection" class="group relative inline-block px-12 py-5 overflow-hidden border border-white/20">
-                    <span class="relative z-10 text-[10px] tracking-[0.3em] uppercase transition-colors group-hover:text-black">Explore Volume 01</span>
-                    <div class="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-                </a>
+    <!-- Main Landing View -->
+    <main id="landing-view" class="transition-opacity duration-700">
+        <!-- Hero Section -->
+        <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=2000&q=80" 
+                     alt="Phigai Hero" class="w-full h-full object-cover grayscale-[0.2] brightness-90 transition-transform duration-[20s] ease-linear transform scale-110" id="hero-img">
             </div>
-        </div>
-        
-        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 scroll-indicator">
-            <div class="w-[1px] h-12 bg-white/30 relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1/2 bg-white scroll-line"></div>
+            <div class="relative z-10 text-center text-white px-4">
+                <p class="uppercase tracking-[0.5em] text-[10px] mb-6 opacity-0 translate-y-4" id="hero-sub">The Architecture of Quietude</p>
+                <h1 class="font-serif italic text-6xl md:text-9xl tracking-tight opacity-0 translate-y-8" id="hero-title">Quietude</h1>
+                <div class="mt-12 opacity-0 translate-y-4 hero-btn-container">
+                    <a href="#featured" class="border border-white/30 backdrop-blur-sm px-8 py-4 uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition-all duration-500">Explore Collection</a>
+                </div>
             </div>
-        </div>
-    </header>
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-40">
+                <i data-lucide="arrow-down" class="text-white w-4 h-4"></i>
+            </div>
+        </header>
 
-    <!-- Collection Intro -->
-    <section id="collection" class="pt-40 pb-20 px-6 md:px-12 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-baseline mb-24 border-b border-black/5 pb-12 reveal-section">
-            <div class="max-w-xl">
-                <span class="text-[10px] uppercase tracking-[0.4em] text-[#D9D2C5] block mb-4 font-semibold">Current Archive</span>
-                <h2 class="text-5xl md:text-7xl font-serif mb-8">Volume 01:<br><span class="italic">The Silence of Fabric.</span></h2>
-            </div>
-            <p class="max-w-xs text-[11px] leading-loose text-gray-500 uppercase tracking-widest">
-                Derived from the Meitei words for 'fabric fragments', Phigai honors the traditional practice of upcycling textile waste into architectural silhouettes.
-            </p>
-        <div id="product-grid"></div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-20" id="product-grid">
-            <!-- Populated from store.js -->
-        </div>
-    </section>
-
-    <!-- About Section: Brand Story -->
-    <section id="about" class="bg-[#2C2C2B] text-[#F5F5F0] py-40 px-6 overflow-hidden">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div class="lg:col-span-5 reveal-left">
-                <div class="relative group aspect-[4/5] overflow-hidden">
-                    <img src="https://r2-bucket.flowith.net/f/a12c522a1e51ee62/phigai_editorial_fashion_shot_index_1%402400x1792.jpeg" 
-                         class="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105" alt="Phigai Story">
-                    <div class="absolute bottom-8 left-8">
-                        <span class="text-[8px] tracking-[0.5em] uppercase border-b border-white/30 pb-1">Imphal, Manipur Est. 2018</span>
-                    </div>
-                </div>
-            </div>
-            <div class="lg:col-span-6 lg:offset-1 space-y-12 reveal-right">
-                <h3 class="text-4xl md:text-6xl font-serif leading-[1.1]">Born from <span class="italic text-[#D9D2C5]">fragments</span>,<br>defined by purpose.</h3>
-                <div class="space-y-6 text-sm font-light leading-relaxed text-gray-400 max-w-md">
-                    <p>
-                        Phigai translates to 'fabric scraps' in Manipuri. Our journey began with the belief that nothing is ever truly finished—only repurposed. We blend ancestral handloom techniques with a brutalist, modern silhouette.
-                    </p>
-                    <p>
-                        We don’t believe luxury should be a shout; it is the silent weight of heavy-weight cotton, the precision of a drape, and the stillness of a well-crafted uniform.
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-8 pt-6">
-                    <div class="space-y-2">
-                        <span class="block text-[#D9D2C5] font-serif text-2xl italic">01.</span>
-                        <span class="text-[9px] uppercase tracking-widest text-gray-300">Ancestral Futurism</span>
-                    </div>
-                    <div class="space-y-2">
-                        <span class="block text-[#D9D2C5] font-serif text-2xl italic">02.</span>
-                        <span class="text-[9px] uppercase tracking-widest text-gray-300">Slow Handcrafted</span>
-                    </div>
-                    <div class="space-y-2">
-                        <span class="block text-[#D9D2C5] font-serif text-2xl italic">03.</span>
-                        <span class="text-[9px] uppercase tracking-widest text-gray-300">Quiet Gen Luxury</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Lookbook / Masonry -->
-    <section id="lookbook" class="py-40 bg-white reveal-section">
-        <div class="max-w-screen-2xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-24 text-center md:text-left">
-                <h2 class="text-4xl font-serif mb-4 md:mb-0 italic">Fragmented Memories <span class="not-italic text-sm tracking-[0.2em] font-sans ml-4 text-gray-400">Archive 2026</span></h2>
-                <a href="#" class="text-[10px] uppercase tracking-[0.3em] border-b border-black pb-1 hover:opacity-50 transition-opacity">View Full Archive</a>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8" id="lookbook-masonry">
-                <div class="space-y-4 md:space-y-8">
-                    <img src="https://r2-bucket.flowith.net/f/777e4a4ce863daad/phigai_luxury_fabric_detail_lookbook_index_3%402048x2048.jpeg" class="w-full object-cover aspect-[3/4] hover-zoom" alt="Detail">
-                    <img src="https://r2-bucket.flowith.net/f/348e23c50681a89a/phigai_collection_street_style_fashion_index_2%402400x1792.jpeg" class="w-full object-cover aspect-square hover-zoom" alt="Style">
-                </div>
-                <div class="pt-12 md:pt-24 space-y-4 md:space-y-8">
-                    <div class="aspect-[2/3] bg-[#F5F5F0] flex items-center justify-center p-12 reveal-scale">
-                        <p class="text-center text-[10px] uppercase tracking-[0.3em] leading-loose text-gray-500 italic font-serif">"The beauty of the unfinished stitch."</p>
-                    </div>
-                    <img src="https://r2-bucket.flowith.net/f/ef50edb275540f58/phigai_minimalist_fashion_hero_index_0%404096x2286.jpeg" class="w-full object-cover aspect-[4/5] hover-zoom" alt="Editorial">
-                </div>
-                <div class="space-y-4 md:space-y-8">
-                    <img src="https://r2-bucket.flowith.net/f/a12c522a1e51ee62/phigai_editorial_fashion_shot_index_1%402400x1792.jpeg" class="w-full object-cover aspect-[3/4] hover-zoom" alt="Fit">
-                    <div class="aspect-square bg-[#2C2C2B] flex items-center justify-center text-[#F5F5F0]">
-                        <span class="text-6xl font-serif">Φ</span>
-                    </div>
-                </div>
-                <div class="pt-24 md:pt-48 space-y-4 md:space-y-8">
-                    <img src="https://r2-bucket.flowith.net/f/777e4a4ce863daad/phigai_luxury_fabric_detail_lookbook_index_3%402048x2048.jpeg" class="w-full object-cover aspect-square hover-zoom" alt="Texture">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Checkout Flow Mockup (Hidden) -->
-    <div id="checkout-mockup" class="fixed inset-0 z-[200] bg-[#F5F5F0] hidden opacity-0 transition-opacity duration-700">
-        <div class="max-w-4xl mx-auto h-full flex flex-col justify-center px-6">
-            <button id="close-checkout" class="absolute top-12 right-12 text-[10px] tracking-[0.3em] uppercase underline">Return</button>
-            <div class="space-y-12">
-                <span class="text-[10px] uppercase tracking-[0.5em] text-[#D9D2C5]">Secure Checkout</span>
-                <h2 class="text-5xl font-serif italic">Finalizing the Motion.</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-black/5 pt-12">
-                    <div class="space-y-6">
-                        <p class="text-[10px] uppercase tracking-[0.2em] font-bold">Contact Info</p>
-                        <div class="space-y-4">
-                            <input type="text" placeholder="Full Name" class="checkout-input">
-                            <input type="email" placeholder="Email" class="checkout-input">
-                            <input type="text" placeholder="Shipping Address" class="checkout-input">
-                        </div>
-                    </div>
-                    <div class="bg-white p-8 space-y-6">
-                        <p class="text-[10px] uppercase tracking-[0.2em] font-bold">Summary</p>
-                        <div id="checkout-summary-items" class="space-y-4 border-b pb-6"></div>
-                        <div class="flex justify-between text-lg font-serif italic pt-4">
-                            <span>Total</span>
-                            <span id="checkout-total">$0.00</span>
-                        </div>
-                        <button class="w-full bg-black text-white py-4 text-[10px] tracking-[0.3em] uppercase hover:bg-[#D9D2C5] hover:text-black transition-all">Confirm Order</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Newsletter -->
-    <section class="py-40 px-6 border-t border-black/5 reveal-section">
-        <div class="max-w-xl mx-auto text-center space-y-12">
-            <h2 class="text-4xl font-serif italic text-[#D9D2C5]">Join the stillness.</h2>
-            <p class="text-[11px] uppercase tracking-[0.3em] text-gray-500 max-w-xs mx-auto leading-relaxed">Early access to Volume 02 & Archival Restocks.</p>
-            <form class="flex flex-col md:flex-row gap-6 mt-12" id="newsletter-form">
-                <input type="email" placeholder="ENTER EMAIL ADDRESS" class="flex-grow bg-transparent border-b border-[#2C2C2B] py-4 text-[10px] tracking-[0.3em] outline-none focus:border-[#D9D2C5] transition-colors">
-                <button type="submit" class="bg-[#2C2C2B] text-white px-12 py-4 text-[10px] tracking-[0.3em] uppercase hover:bg-[#D9D2C5] hover:text-[#2C2C2B] transition-all">Submit</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-[#2C2C2B] text-gray-400 py-32 px-6 md:px-12">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
-            <div class="md:col-span-6 space-y-8">
-                <h4 class="text-3xl font-serif tracking-[0.2em] text-[#F5F5F0]">PHIGAI</h4>
-                <p class="text-[10px] max-w-xs leading-loose uppercase tracking-[0.2em]">
-                    Handcrafted in Imphal, Manipur.<br>
-                    Distributed globally for the quiet movement.<br>
-                    A sustainable archive of traditional fragments.
+        <!-- Brand Statement -->
+        <section class="py-32 px-6 bg-transparent text-center overflow-hidden">
+            <div class="max-w-4xl mx-auto reveal-up">
+                <span class="text-phigai-beige font-serif italic text-xl">The Philosophy</span>
+                <h2 class="text-3xl md:text-5xl font-serif mt-6 leading-tight brand-story-headline">Material Sincerity & Cultural Synthesis.</h2>
+                <p class="mt-12 text-phigai-charcoal/70 leading-relaxed font-sans max-w-xl mx-auto text-sm md:text-base brand-story-text">
+                    Phigai represents a quiet protest against the noise of fast fashion. Rooted in the precision of Korean minimalism and the soul of vintage craftsmanship, designed for the modern Indian diaspora.
                 </p>
             </div>
-            <div class="md:col-span-3 space-y-6">
-                <h5 class="text-[10px] uppercase tracking-[0.4em] text-[#F5F5F0] font-bold">Customer Care</h5>
-                <ul class="text-[10px] uppercase tracking-[0.2em] space-y-3">
-                    <li><a href="#" class="hover:text-[#F5F5F0] transition-colors">Archive Access</a></li>
-                    <li><a href="#" class="hover:text-[#F5F5F0] transition-colors">Returns & Claims</a></li>
-                    <li><a href="#" class="hover:text-[#F5F5F0] transition-colors">Sizing Reference</a></li>
-                    <li><a href="#" class="hover:text-[#F5F5F0] transition-colors">Global Logistics</a></li>
-                </ul>
-            </div>
-            <div class="md:col-span-3 space-y-6">
-                <h5 class="text-[10px] uppercase tracking-[0.4em] text-[#F5F5F0] font-bold">Perspective</h5>
-                <ul class="text-[10px] uppercase tracking-[0.2em] space-y-3">
-                    <li><a href="https://www.instagram.com/phigai_" target="_blank" class="hover:text-[#F5F5F0] transition-colors">Instagram</a></li>
-                    <li><a href="#" class="hover:text-[#F5F5F0] transition-colors">Pinterest Archive</a></li>
-                    <li><a href="#" class="hover:text-[#F5F5F0] transition-colors">The Studio Note</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between text-[8px] uppercase tracking-[0.4em]">
-            <span>© 2026 Phigai Private Limited. All Rights Reserved.</span>
-            <span>Ancestral Futurism. Slowly Made.</span>
-        </div>
-    </footer>
+        </section>
 
-    <!-- Quick View Modal -->
-    <div id="quick-view" class="fixed inset-0 z-[150] flex items-center justify-center invisible opacity-0 transition-all duration-500">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-md" id="qv-overlay"></div>
-        <div class="relative bg-[#F5F5F0] w-full max-w-5xl h-auto md:h-[70vh] flex flex-col md:flex-row overflow-hidden shadow-2xl scale-95 transition-transform duration-500" id="qv-container">
-            <!-- Populated via JS -->
-        </div>
-    </div>
-    <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Product Selection Demo</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 2rem;
-      cursor: pointer;
-    }
-    .product-list {
-      display: flex;
-      gap: 2rem;
-    }
-    .product-card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      padding: 1rem;
-      cursor: pointer;
-      width: 200px;
-      text-align: center;
-      transition: box-shadow 0.3s;
-    }
-    .product-card.selected {
-      background: #cce5ff;
-      box-shadow: 0 0 0 3px #339af0;
-    }
-    .product-card img {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      margin-bottom: 1rem;
-    }
-    .sizes {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 1rem;
-    }
-    .size {
-      border: 1px solid #aaa;
-      padding: 3px 12px;
-      border-radius: 4px;
-      background: #f9f9f9;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .size.selected {
-      background: #ffc078;
-      border-color: #fd7e14;
-      color: #212529;
-    }
-    /* Modal / Popup Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      left: 0; top: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.4);
-      align-items: center;
-      justify-content: center;
-    }
-    .modal.show {
-      display: flex;
-    }
-    .modal-content {
-      background: #fff;
-      border-radius: 8px;
-      padding: 2rem;
-      min-width: 320px;
-      position: relative;
-      box-shadow: 0 2px 40px rgba(0,0,0,0.15);
-    }
-    .close {
-      position: absolute; top: 1rem; right: 1rem;
-      font-size: 2rem; color: #999; cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <h2>Select a Product</h2>
-  <div class="product-list" id="productList">
-    <!-- Products injected by JS -->
-  </div>
-
-  <!-- Modal / Popup -->
-  <div class="modal" id="modal">
-    <div class="modal-content" id="modalContent">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <!-- Modal details injected by JS -->
-    </div>
-  </div>
-
-  <script>
-    // Sample Product Data
-    const products = [
-      {id:1, name:'Shirts', image:'https://img.jpg', sizes:['S','M','L']},
-      {id:2, name:'Overcoat',   image:'https://img.jpg', sizes:['M','L','XL']},
-      {id:3, name:'Pants', image:'https://img.jpg', sizes:['S','M','L']},
-    ];
-    let selectedProductId = null;
-    let selectedSizes = {};
-
-    const productList = document.getElementById('productList');
-    const modal = document.getElementById('modal');
-    const modalContent = document.getElementById('modalContent');
-
-    // Render product cards
-    function renderProducts() {
-      productList.innerHTML = '';
-      for (const prod of products) {
-        const selected = prod.id === selectedProductId ? 'selected' : '';
-        let sizesHtml = '';
-        for (const size of prod.sizes) {
-          const sizeSel = selectedSizes[prod.id] === size ? 'selected' : '';
-          sizesHtml += `<span class="size ${sizeSel}" 
-                          onclick="event.stopPropagation();selectSize(${prod.id},'${size}')">${size}</span>`;
-        }
-        productList.innerHTML += `
-          <div class="product-card ${selected}" onclick="openProductModal(${prod.id})" id="product${prod.id}">
-            <img src="${prod.image}" alt="${prod.name}"/>
-            <div>${prod.name}</div>
-            <div class="sizes">${sizesHtml}</div>
-          </div>`;
-      }
-    }
-
-    // Open Pop-up modal
-    window.openProductModal = function(prodId) {
-      selectedProductId = prodId;
-      renderProducts();
-
-      const prod = products.find(p=>p.id===prodId);
-      let sizesHtml = '';
-      for (const size of prod.sizes) {
-        const sizeSel = selectedSizes[prod.id] === size ? 'selected' : '';
-        sizesHtml += `<span class="size ${sizeSel}" 
-                        onclick="event.stopPropagation();selectSize(${prod.id},'${size}')">${size}</span>`;
-      }
-      modalContent.innerHTML = `
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img src="${prod.image}" alt="${prod.name}" style="width:120px;height:120px;margin-bottom:1rem;" />
-        <h3>${prod.name}</h3>
-        <div style="margin:1rem 0 0.5rem 0;"><strong>Choose size:</strong></div>
-        <div class="sizes">${sizesHtml}</div>
-        <div style="margin-top:1.5rem;">
-          <button onclick="confirmSelection()">Confirm Selection</button>
-        </div>
-      `;
-      modal.classList.add('show');
-    };
-
-    // Pop-up confirm (just closes the modal for demo)
-    window.confirmSelection = function() {
-      closeModal();
-    };
-
-    // Close Modal
-    window.closeModal = function() {
-      modal.classList.remove('show');
-      renderProducts();
-    };
-
-    // Select Size
-    window.selectSize = function(prodId, size) {
-      selectedSizes[prodId] = size;
-      renderProducts();
-      // Also update modal if open
-      if(modal.classList.contains("show") && selectedProductId === prodId) {
-        openProductModal(prodId);
-      }
-    };
-
-    // Initial render
-    renderProducts();
-
-    <!-- Shopping Cart Sidebar -->
-    <div id="cart-sidebar" class="fixed inset-0 z-[200] translate-x-full transition-transform duration-700 ease-in-out invisible">
-        <div class="absolute inset-0 bg-black/10 backdrop-blur-sm" id="cart-overlay"></div>
-        <div class="absolute right-0 top-0 h-full w-full md:w-[500px] bg-white p-12 shadow-2xl flex flex-col">
-            <div class="flex justify-between items-center mb-16">
-                <h3 class="text-3xl font-serif italic">Your Bag</h3>
-                <button id="cart-close" class="hover:rotate-90 transition-transform"><i data-lucide="x" class="w-6 h-6"></i></button>
-            </div>
-            <div id="cart-items" class="flex-grow overflow-y-auto space-y-8 scroll-thin">
-                <!-- Cart items here -->
-            </div>
-            <div class="border-t pt-10 space-y-6">
-                <div class="flex justify-between text-[11px] uppercase tracking-[0.4em] font-bold">
-                    <span>Subtotal</span>
-                    <span id="cart-total">$0.00</span>
+        <!-- Featured Products -->
+        <section id="featured" class="px-6 py-12 md:py-24 max-w-[1600px] mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+                <div>
+                    <span class="text-[10px] uppercase tracking-widest text-phigai-beige">Collection 01</span>
+                    <h3 class="text-4xl font-serif mt-2 italic">The Architectural Edit</h3>
                 </div>
-                <p class="text-[9px] uppercase tracking-widest text-gray-400">Shipping and taxes calculated at checkout.</p>
-                <button id="checkout-btn" class="w-full bg-[#2C2C2B] text-white py-5 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-[#D9D2C5] hover:text-[#2C2C2B] transition-all transform hover:-translate-y-1">Proceed to Checkout</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16" id="product-grid">
+                <!-- Products injected by JS -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-transparent pt-24 pb-12 px-6">
+            <div class="max-w-[1600px] mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-24">
+                    <div class="col-span-1">
+                        <a href="#" class="text-2xl tracking-[0.4em] font-serif uppercase brand-logo-text">Phigai</a>
+                        <p class="mt-8 text-xs text-phigai-charcoal/50 leading-loose max-w-[200px]">Uniforms for a life lived with intention.</p>
+                    </div>
+                    <div>
+                        <h5 class="text-[10px] uppercase tracking-widest mb-8 font-bold">Collection</h5>
+                        <ul class="space-y-4 text-xs text-phigai-charcoal/70">
+                            <li><a href="#" class="hover:text-phigai-charcoal">All Objects</a></li>
+                            <li><a href="#" class="hover:text-phigai-charcoal">Archive</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="text-[10px] uppercase tracking-widest mb-8 font-bold">Assistance</h5>
+                        <ul class="space-y-4 text-xs text-phigai-charcoal/70">
+                            <li><a href="#" class="hover:text-phigai-charcoal">Shipping</a></li>
+                            <li><a href="#" class="hover:text-phigai-charcoal" onclick="event.preventDefault(); document.querySelector('.profile-toggle').click()">My Profile</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="text-[10px] uppercase tracking-widest mb-8 font-bold">Connect</h5>
+                        <ul class="space-y-4 text-xs text-phigai-charcoal/70">
+                            <li><a href="https://www.instagram.com/phigai_" target="_blank" class="hover:text-phigai-charcoal">Instagram</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center border-t border-phigai-charcoal/5 pt-12">
+                    <p class="text-[9px] uppercase tracking-widest opacity-40">© 2026 Phigai Studio India</p>
+                    <div class="flex gap-4">
+                        <i data-lucide="globe" class="w-3 h-3 opacity-30"></i>
+                        <span class="text-[9px] uppercase tracking-widest opacity-40">Pan-India Delivery</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Profile Drawer -->
+    <div id="profile-drawer" class="fixed inset-0 z-[130] pointer-events-none">
+        <div id="profile-overlay" class="absolute inset-0 bg-black/20 backdrop-blur-sm opacity-0 transition-opacity duration-500"></div>
+        <div id="profile-panel" class="absolute right-0 top-0 h-full w-full max-w-md bg-white translate-x-full transition-transform duration-500 ease-out flex flex-col pointer-events-auto">
+            <div class="flex items-center justify-between p-8 border-b border-phigai-charcoal/5">
+                <h3 class="font-serif italic text-2xl">Member Profile</h3>
+                <button id="profile-close" class="p-2 hover:opacity-50 transition-opacity"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-8 space-y-12">
+                <section>
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-phigai-beige font-bold">Identity</span>
+                    <div class="mt-6 flex items-center gap-6">
+                        <div class="w-16 h-16 bg-phigai-muted rounded-full flex items-center justify-center">
+                            <i data-lucide="user" class="w-6 h-6 opacity-30"></i>
+                        </div>
+                        <div>
+                            <h4 id="user-name" class="font-serif text-xl italic">Aria Chen</h4>
+                            <p id="user-email" class="text-[10px] opacity-40 uppercase tracking-widest">aria.chen@studio.com</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-phigai-cream border border-phigai-charcoal/5">
+                            <p class="text-[8px] uppercase tracking-widest opacity-40">Member Since</p>
+                            <p class="text-[10px] mt-1">Oct 2025</p>
+                        </div>
+                        <div class="p-4 bg-phigai-cream border border-phigai-charcoal/5">
+                            <p class="text-[8px] uppercase tracking-widest opacity-40">Status</p>
+                            <p class="text-[10px] mt-1 text-phigai-beige font-bold">Archivist</p>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-phigai-beige font-bold">Shipping Ateliers</span>
+                        <button class="text-[9px] uppercase tracking-widest border-b border-phigai-charcoal pb-0.5 hover:opacity-50 transition-opacity">Add New</button>
+                    </div>
+                    <div id="delivery-locations" class="space-y-4"></div>
+                </section>
+            </div>
+            <div class="p-8 border-t border-phigai-charcoal/5 bg-phigai-cream/30">
+                <button class="w-full border border-phigai-charcoal/10 py-4 text-[10px] uppercase tracking-[0.3em] hover:bg-phigai-charcoal hover:text-white transition-all">Sign Out</button>
             </div>
         </div>
     </div>
 
-    <script type="module" src="store.js"></script>
-    <script type="module" src="animations.js"></script>
-    <script type="module" src="components.js"></script>
-    <script>
-        window.addEventListener('load', () => {
-            lucide.createIcons();
-        });
-    <script type="module" src="stripe-button.js"></script>
-    <script type="module" src="./main.js"></script>
-    <!-- CART SIDEBAR -->
-<aside id="cart-sidebar" class="translate-x-full invisible">
-  <div class="cart-header">
-    <h3>Your Bag</h3>
-    <button onclick="closeCart()">Close</button>
-  </div>
+    <!-- Full Product Detail View -->
+    <div id="product-detail-view" class="fixed inset-0 bg-[#F4F1EA] z-[60] overflow-y-auto hidden opacity-0 transition-opacity duration-700">
+        <div class="sticky top-0 z-[70] px-6 py-6 flex items-center justify-between pointer-events-none">
+            <button id="back-to-collection" class="pointer-events-auto flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] group">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                Back to Collection
+            </button>
+        </div>
 
-  <div id="cart-items"></div>
+        <div class="max-w-[1600px] mx-auto px-6 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-12 mt-12">
+            <div class="lg:col-span-7 space-y-4" id="pd-gallery"></div>
+            <div class="lg:col-span-5 relative">
+                <div class="lg:sticky lg:top-32 space-y-12">
+                    <div>
+                        <span id="pd-cat" class="text-[10px] uppercase tracking-widest text-phigai-beige">Category</span>
+                        <h2 id="pd-name" class="text-4xl md:text-5xl font-serif italic mt-2">Product Name</h2>
+                        <p id="pd-price" class="text-2xl font-serif mt-6">₹0</p>
+                    </div>
 
-  <div class="cart-footer">
-    <div class="cart-total-row">
-      <span>Total</span>
-      <span id="cart-total">₹0</span>
+                    <div class="space-y-6">
+                        <p id="pd-desc" class="text-xs leading-relaxed text-phigai-charcoal/60 max-w-md"></p>
+                        <div class="space-y-4">
+                            <span class="text-[10px] uppercase tracking-widest font-bold">Select Size</span>
+                            <div class="flex gap-3" id="pd-size-selector">
+                                <button class="pd-size-btn border border-phigai-charcoal/10 px-6 py-3 text-[10px] hover:border-phigai-charcoal transition-all" data-size="S">S</button>
+                                <button class="pd-size-btn border border-phigai-charcoal/10 px-6 py-3 text-[10px] hover:border-phigai-charcoal transition-all" data-size="M">M</button>
+                                <button class="pd-size-btn border border-phigai-charcoal/10 px-6 py-3 text-[10px] hover:border-phigai-charcoal transition-all" data-size="L">L</button>
+                                <button class="pd-size-btn border border-phigai-charcoal/10 px-6 py-3 text-[10px] hover:border-phigai-charcoal transition-all" data-size="XL">XL</button>
+                                <button class="pd-size-btn border border-phigai-charcoal/10 px-6 py-3 text-[10px] hover:border-phigai-charcoal transition-all" data-size="XXL">XXL</button>
+                            </div>
+                            <div id="pd-size-error" class="text-[9px] text-red-500 uppercase tracking-widest opacity-0 h-2">Select a size to proceed</div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <button id="pd-add-btn" class="flex-grow bg-phigai-beige text-white py-5 text-[10px] uppercase tracking-[0.3em] hover:brightness-90 transition-all">Add to Bag</button>
+                            <button id="pd-wish-btn" class="px-6 border border-phigai-charcoal/10 hover:bg-white hover:border-phigai-charcoal transition-all">
+                                <i data-lucide="heart" class="w-5 h-5 wish-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="bg-white py-32 px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <span class="text-[10px] uppercase tracking-widest text-phigai-beige">Phigai Community</span>
+                <h3 class="text-4xl font-serif italic mt-4">Reviews & Reflections</h3>
+                <div id="pd-reviews" class="space-y-16 mt-24 text-left"></div>
+                <button id="open-review-modal" class="mt-24 bg-phigai-charcoal text-white px-10 py-4 text-[10px] uppercase tracking-widest hover:bg-black transition-all">Add a Reflection</button>
+            </div>
+        </section>
     </div>
 
-    <button id="confirm-order">Pay Now</button>
-  </div>
-</aside>
+    <!-- Wishlist Drawer -->
+    <div id="wishlist-drawer" class="fixed inset-0 z-[110] pointer-events-none">
+        <div id="wishlist-overlay" class="absolute inset-0 bg-black/20 backdrop-blur-sm opacity-0 transition-opacity duration-500"></div>
+        <div id="wishlist-panel" class="absolute right-0 top-0 h-full w-full max-w-md bg-white translate-x-full transition-transform duration-500 ease-out flex flex-col pointer-events-auto">
+            <div class="flex items-center justify-between p-8 border-b border-phigai-charcoal/5">
+                <h3 class="font-serif italic text-2xl">Wishlist</h3>
+                <button id="wishlist-close" class="p-2 hover:opacity-50 transition-opacity"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div id="wishlist-items" class="flex-grow overflow-y-auto p-8 space-y-8"></div>
+            <div class="p-8 border-t border-phigai-charcoal/5 bg-phigai-cream/30">
+                <button id="wishlist-to-featured" class="w-full bg-phigai-charcoal text-white py-5 text-[10px] uppercase tracking-[0.3em] hover:bg-black transition-colors">Discover More Objects</button>
+            </div>
+        </div>
+    </div>
 
-<!-- CART ICON (put this in your navbar/header ideally) -->
-<button id="cart-btn" onclick="openCart()">
-  Bag <span id="cart-count" style="opacity:0;">0</span>
-</button>
-  </script>
+    <!-- Review Modal -->
+    <div id="review-modal" class="fixed inset-0 z-[150] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+        <div id="review-overlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+        <div class="relative w-full max-w-lg bg-phigai-cream p-10 shadow-2xl">
+            <button id="close-review-modal" class="absolute top-6 right-6 p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <div class="space-y-8 text-center">
+                <h4 class="font-serif italic text-3xl">Your Reflection</h4>
+                <div class="flex gap-2 justify-center" id="star-rating-input">
+                    <i data-lucide="star" class="w-5 h-5 cursor-pointer star-btn" data-val="1"></i>
+                    <i data-lucide="star" class="w-5 h-5 cursor-pointer star-btn" data-val="2"></i>
+                    <i data-lucide="star" class="w-5 h-5 cursor-pointer star-btn" data-val="3"></i>
+                    <i data-lucide="star" class="w-5 h-5 cursor-pointer star-btn" data-val="4"></i>
+                    <i data-lucide="star" class="w-5 h-5 cursor-pointer star-btn" data-val="5"></i>
+                </div>
+                <textarea id="community-comment" rows="4" placeholder="How does this piece feel on you?" class="w-full bg-white/50 border border-phigai-charcoal/10 p-4 text-[11px] leading-relaxed outline-none focus:border-phigai-charcoal transition-colors resize-none"></textarea>
+                <button id="submit-review-btn" class="w-full bg-phigai-charcoal text-white py-4 text-[10px] uppercase tracking-widest hover:bg-black transition-all">Publish Reflection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="fixed inset-0 z-[100] pointer-events-none">
+        <div id="cart-overlay" class="absolute inset-0 bg-black/20 backdrop-blur-sm opacity-0 transition-opacity duration-500"></div>
+        <div id="cart-panel" class="absolute right-0 top-0 h-full w-full max-w-md bg-white translate-x-full transition-transform duration-500 ease-out flex flex-col pointer-events-auto">
+            <div class="flex items-center justify-between p-8 border-b border-phigai-charcoal/5">
+                <h3 class="font-serif italic text-2xl">Your Bag</h3>
+                <button id="cart-close" class="p-2 hover:opacity-50 transition-opacity"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div id="cart-items" class="flex-grow overflow-y-auto p-8 space-y-8"></div>
+            <div class="p-8 border-t border-phigai-charcoal/5 bg-phigai-cream/30">
+                <div class="flex justify-between items-end mb-8">
+                    <span class="text-[10px] uppercase tracking-widest opacity-60">Subtotal</span>
+                    <span id="cart-total" class="font-serif text-xl">₹0</span>
+                </div>
+                <button id="checkout-trigger" class="w-full bg-phigai-charcoal text-white py-5 text-[10px] uppercase tracking-[0.3em] hover:bg-black transition-colors">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal Simulation -->
+    <div id="checkout-modal" class="fixed inset-0 z-[200] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500">
+        <div id="checkout-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-2xl bg-white p-12 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <button id="checkout-close" class="absolute top-6 right-6 p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <div class="checkout-step" id="step-content-1">
+                <h4 class="font-serif italic text-3xl mb-8">Shipping Ateliers</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12" id="checkout-locations"></div>
+                <button onclick="nextStep(2)" class="w-full bg-phigai-charcoal text-white py-4 text-[10px] uppercase tracking-widest hover:bg-black transition-all">Proceed to Payment</button>
+            </div>
+            <div class="checkout-step hidden" id="step-content-2">
+                <h4 class="font-serif italic text-3xl mb-8">Payment Synthesis</h4>
+                <div class="space-y-4 mb-12 text-[11px] uppercase tracking-widest opacity-60">
+                    <p>Secured payment portal via Razorpay/Stripe simulation.</p>
+                </div>
+                <button id="final-purchase-btn" class="w-full bg-phigai-charcoal text-white py-4 text-[10px] uppercase tracking-widest hover:bg-black transition-all">Complete Transaction</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
 </body>
 </html>
-
