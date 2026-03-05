@@ -235,63 +235,7 @@
             <!-- Populated via JS -->
         </div>
     </div>
-
-    <!-- Shopping Cart Sidebar -->
-    <div id="cart-sidebar" class="fixed inset-0 z-[200] translate-x-full transition-transform duration-700 ease-in-out invisible">
-        <div class="absolute inset-0 bg-black/10 backdrop-blur-sm" id="cart-overlay"></div>
-        <div class="absolute right-0 top-0 h-full w-full md:w-[500px] bg-white p-12 shadow-2xl flex flex-col">
-            <div class="flex justify-between items-center mb-16">
-                <h3 class="text-3xl font-serif italic">Your Bag</h3>
-                <button id="cart-close" class="hover:rotate-90 transition-transform"><i data-lucide="x" class="w-6 h-6"></i></button>
-            </div>
-            <div id="cart-items" class="flex-grow overflow-y-auto space-y-8 scroll-thin">
-                <!-- Cart items here -->
-            </div>
-            <div class="border-t pt-10 space-y-6">
-                <div class="flex justify-between text-[11px] uppercase tracking-[0.4em] font-bold">
-                    <span>Subtotal</span>
-                    <span id="cart-total">$0.00</span>
-                </div>
-                <p class="text-[9px] uppercase tracking-widest text-gray-400">Shipping and taxes calculated at checkout.</p>
-                <button id="checkout-btn" class="w-full bg-[#2C2C2B] text-white py-5 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-[#D9D2C5] hover:text-[#2C2C2B] transition-all transform hover:-translate-y-1">Proceed to Checkout</button>
-            </div>
-        </div>
-    </div>
-
-    <script type="module" src="store.js"></script>
-    <script type="module" src="animations.js"></script>
-    <script type="module" src="components.js"></script>
-    <script>
-        window.addEventListener('load', () => {
-            lucide.createIcons();
-        });
-    <script type="module" src="stripe-button.js"></script>
-    <script type="module" src="./main.js"></script>
-    <!-- CART SIDEBAR -->
-<aside id="cart-sidebar" class="translate-x-full invisible">
-  <div class="cart-header">
-    <h3>Your Bag</h3>
-    <button onclick="closeCart()">Close</button>
-  </div>
-
-  <div id="cart-items"></div>
-
-  <div class="cart-footer">
-    <div class="cart-total-row">
-      <span>Total</span>
-      <span id="cart-total">₹0</span>
-    </div>
-
-    <button id="confirm-order">Pay Now</button>
-  </div>
-</aside>
-
-<!-- CART ICON (put this in your navbar/header ideally) -->
-<button id="cart-btn" onclick="openCart()">
-  Bag <span id="cart-count" style="opacity:0;">0</span>
-</button>
-  <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Product Selection Demo</title>
@@ -391,9 +335,9 @@
   <script>
     // Sample Product Data
     const products = [
-      {id:1, name:'Sneakers', image:'https://img.icons8.com/color/96/000000/trainers.jpg', sizes:['S','M','L']},
-      {id:2, name:'Jacket',   image:'https://img.icons8.com/color/96/000000/jacket.jpg', sizes:['M','L','XL']},
-      {id:3, name:'Backpack', image:'https://img.icons8.com/color/96/000000/backpack.jpg', sizes:['S','M','L']},
+      {id:1, name:'Shirts', image:'https://img.jpg', sizes:['S','M','L']},
+      {id:2, name:'Overcoat',   image:'https://img.jpg', sizes:['M','L','XL']},
+      {id:3, name:'Pants', image:'https://img.jpg', sizes:['S','M','L']},
     ];
     let selectedProductId = null;
     let selectedSizes = {};
@@ -470,6 +414,61 @@
 
     // Initial render
     renderProducts();
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-0 z-[200] translate-x-full transition-transform duration-700 ease-in-out invisible">
+        <div class="absolute inset-0 bg-black/10 backdrop-blur-sm" id="cart-overlay"></div>
+        <div class="absolute right-0 top-0 h-full w-full md:w-[500px] bg-white p-12 shadow-2xl flex flex-col">
+            <div class="flex justify-between items-center mb-16">
+                <h3 class="text-3xl font-serif italic">Your Bag</h3>
+                <button id="cart-close" class="hover:rotate-90 transition-transform"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <div id="cart-items" class="flex-grow overflow-y-auto space-y-8 scroll-thin">
+                <!-- Cart items here -->
+            </div>
+            <div class="border-t pt-10 space-y-6">
+                <div class="flex justify-between text-[11px] uppercase tracking-[0.4em] font-bold">
+                    <span>Subtotal</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+                <p class="text-[9px] uppercase tracking-widest text-gray-400">Shipping and taxes calculated at checkout.</p>
+                <button id="checkout-btn" class="w-full bg-[#2C2C2B] text-white py-5 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-[#D9D2C5] hover:text-[#2C2C2B] transition-all transform hover:-translate-y-1">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="store.js"></script>
+    <script type="module" src="animations.js"></script>
+    <script type="module" src="components.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            lucide.createIcons();
+        });
+    <script type="module" src="stripe-button.js"></script>
+    <script type="module" src="./main.js"></script>
+    <!-- CART SIDEBAR -->
+<aside id="cart-sidebar" class="translate-x-full invisible">
+  <div class="cart-header">
+    <h3>Your Bag</h3>
+    <button onclick="closeCart()">Close</button>
+  </div>
+
+  <div id="cart-items"></div>
+
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <span id="cart-total">₹0</span>
+    </div>
+
+    <button id="confirm-order">Pay Now</button>
+  </div>
+</aside>
+
+<!-- CART ICON (put this in your navbar/header ideally) -->
+<button id="cart-btn" onclick="openCart()">
+  Bag <span id="cart-count" style="opacity:0;">0</span>
+</button>
   </script>
 </body>
 </html>
