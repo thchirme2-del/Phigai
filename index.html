@@ -1,4 +1,187 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Selection Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 2rem;
+      cursor: pointer;
+    }
+    .product-list {
+      display: flex;
+      gap: 2rem;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 1rem;
+      cursor: pointer;
+      width: 200px;
+      text-align: center;
+      transition: box-shadow 0.3s;
+    }
+    .product-card.selected {
+      background: #cce5ff;
+      box-shadow: 0 0 0 3px #339af0;
+    }
+    .product-card img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+    .sizes {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+    .size {
+      border: 1px solid #aaa;
+      padding: 3px 12px;
+      border-radius: 4px;
+      background: #f9f9f9;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .size.selected {
+      background: #ffc078;
+      border-color: #fd7e14;
+      color: #212529;
+    }
+    /* Modal / Popup Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.4);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: #fff;
+      border-radius: 8px;
+      padding: 2rem;
+      min-width: 320px;
+      position: relative;
+      box-shadow: 0 2px 40px rgba(0,0,0,0.15);
+    }
+    .close {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 2rem; color: #999; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Select a Product</h2>
+  <div class="product-list" id="productList">
+    <!-- Products injected by JS -->
+  </div>
+
+  <!-- Modal / Popup -->
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modalContent">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <!-- Modal details injected by JS -->
+    </div>
+  </div>
+
+  <script>
+    // Sample Product Data
+    const products = [
+      {id:1, name:'Sneakers', image:'https://img.icons8.com/color/96/000000/trainers.png', sizes:['S','M','L']},
+      {id:2, name:'Jacket',   image:'https://img.icons8.com/color/96/000000/jacket.png', sizes:['M','L','XL']},
+      {id:3, name:'Backpack', image:'https://img.icons8.com/color/96/000000/backpack.png', sizes:['S','M','L']},
+    ];
+    let selectedProductId = null;
+    let selectedSizes = {};
+
+    const productList = document.getElementById('productList');
+    const modal = document.getElementById('modal');
+    const modalContent = document.getElementById('modalContent');
+
+    // Render product cards
+    function renderProducts() {
+      productList.innerHTML = '';
+      for (const prod of products) {
+        const selected = prod.id === selectedProductId ? 'selected' : '';
+        let sizesHtml = '';
+        for (const size of prod.sizes) {
+          const sizeSel = selectedSizes[prod.id] === size ? 'selected' : '';
+          sizesHtml += `<span class="size ${sizeSel}" 
+                          onclick="event.stopPropagation();selectSize(${prod.id},'${size}')">${size}</span>`;
+        }
+        productList.innerHTML += `
+          <div class="product-card ${selected}" onclick="openProductModal(${prod.id})" id="product${prod.id}">
+            <img src="${prod.image}" alt="${prod.name}"/>
+            <div>${prod.name}</div>
+            <div class="sizes">${sizesHtml}</div>
+          </div>`;
+      }
+    }
+
+    // Open Pop-up modal
+    window.openProductModal = function(prodId) {
+      selectedProductId = prodId;
+      renderProducts();
+
+      const prod = products.find(p=>p.id===prodId);
+      let sizesHtml = '';
+      for (const size of prod.sizes) {
+        const sizeSel = selectedSizes[prod.id] === size ? 'selected' : '';
+        sizesHtml += `<span class="size ${sizeSel}" 
+                        onclick="event.stopPropagation();selectSize(${prod.id},'${size}')">${size}</span>`;
+      }
+      modalContent.innerHTML = `
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img src="${prod.image}" alt="${prod.name}" style="width:120px;height:120px;margin-bottom:1rem;" />
+        <h3>${prod.name}</h3>
+        <div style="margin:1rem 0 0.5rem 0;"><strong>Choose size:</strong></div>
+        <div class="sizes">${sizesHtml}</div>
+        <div style="margin-top:1.5rem;">
+          <button onclick="confirmSelection()">Confirm Selection</button>
+        </div>
+      `;
+      modal.classList.add('show');
+    };
+
+    // Pop-up confirm (just closes the modal for demo)
+    window.confirmSelection = function() {
+      closeModal();
+    };
+
+    // Close Modal
+    window.closeModal = function() {
+      modal.classList.remove('show');
+      renderProducts();
+    };
+
+    // Select Size
+    window.selectSize = function(prodId, size) {
+      selectedSizes[prodId] = size;
+      renderProducts();
+      // Also update modal if open
+      if(modal.classList.contains("show") && selectedProductId === prodId) {
+        openProductModal(prodId);
+      }
+    };
+
+    // Initial render
+    renderProducts();
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
