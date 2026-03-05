@@ -1,0 +1,52 @@
+[
+  {
+    "id": "pg-001",
+    "name": "Heavyweight Boxy Tee",
+    "category": "Objects 01",
+    "price": 3800,
+    "description": "Crafted from 300GSM organic cotton. A structured drape designed for the architecture of the body. Features dropped shoulders and a minimalist silhouette.",
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1000&q=80",
+    "hoverImage": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=1000&q=80",
+    "reviews": [
+      { "user": "Aaryan K.", "rating": 5, "text": "Phigai's quality is unmatched. The drape on this tee is perfect for my Gen-Z wardrobe." },
+      { "user": "Meher S.", "rating": 4, "text": "Incredibly soft yet holds its shape. A true staple." }
+    ]
+  },
+  {
+    "id": "pg-002",
+    "name": "Archival Raw Denim",
+    "category": "Objects 02",
+    "price": 8500,
+    "description": "14oz Selvedge denim sourced from Okayama. Rigid construction that ages with the wearer. Relaxed fit through the leg.",
+    "image": "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=1000&q=80",
+    "hoverImage": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=1000&q=80",
+    "reviews": [
+      { "user": "Ishaan P.", "rating": 5, "text": "Best raw denim I've owned. The indigo depth is beautiful." },
+      { "user": "Rohan M.", "rating": 5, "text": "The silhouette is archival perfection. Worth every rupee." }
+    ]
+  },
+  {
+    "id": "pg-003",
+    "name": "Structured Studio Cap",
+    "category": "Accessories",
+    "price": 2200,
+    "description": "6-panel construction with embroidered branding. Adjustable brass clasp. The essential finishing touch.",
+    "image": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=1000&q=80",
+    "hoverImage": "https://images.unsplash.com/photo-1572307480813-ceb0e59d832e?auto=format&fit=crop&w=1000&q=80",
+    "reviews": [
+      { "user": "Sana V.", "rating": 5, "text": "Clean, minimal, and fits perfectly. My daily go-to." }
+    ]
+  },
+  {
+    "id": "pg-004",
+    "name": "Wool Blend Overcoat",
+    "category": "Outerwear",
+    "price": 14500,
+    "description": "Double-breasted silhouette in a heavyweight wool blend. Deep internal pockets for the modern nomad.",
+    "image": "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=1000&q=80",
+    "hoverImage": "https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=1000&q=80",
+    "reviews": [
+      { "user": "Kabir L.", "rating": 5, "text": "The tailoring on this coat rivals high-end luxury brands." }
+    ]
+  }
+]
